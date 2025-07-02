@@ -1,4 +1,4 @@
-name: Update Manifests on Meta Repo Merge
+name: Update Meta on entservices Repo Merge
 
 on:
   workflow_call:
