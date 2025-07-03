@@ -50,7 +50,7 @@ jobs:
           GITHUB_ORG: 'ssitar583'
           META_REPO_PATH: ${{ github.workspace }}/meta_repo
           META_REPO_NAME: 'ssitar583/meta-rdk-video'
-          PR_NUMBER: 111
+          PR_NUMBER: 1
           BASE_BRANCH: develop
         run: |
           cd meta_repo
