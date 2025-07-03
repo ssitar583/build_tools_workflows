@@ -24,7 +24,6 @@ jobs:
           repository: 'ssitar583/meta-rdk-video'
           path: 'meta_repo'
           ref: develop
-          token: ${{ secrets.PAT }}
       
       - name: Update Git Config
         env:
