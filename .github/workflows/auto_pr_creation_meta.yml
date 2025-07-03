@@ -43,17 +43,6 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip install requests PyGithub GitPython
-
-      - name: Debug GITHUB_TOKEN
-        run: |
-          if [ -z "$GITHUB_TOKEN" ]; then
-            echo "GITHUB_TOKEN is empty!"
-            exit 1
-          else
-            echo "GITHUB_TOKEN is set."
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
           
       - name: Run the update script
         env:
