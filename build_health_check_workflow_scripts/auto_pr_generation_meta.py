@@ -11,11 +11,11 @@ import time
 
 
 #Fetch all merged PRs linked to a specific issue.
-def fetch_merge_commits(owner, repo, pr_number, github_token):
+def fetch_merge_commits(owner, repo, pr_number):
  
     url = 'https://api.github.com/graphql'
     repo_without_org = repo.split('/')[-1]
-    headers = {'Authorization': 'Bearer {}'.format(github_token)}
+    # headers = {'Authorization': 'Bearer {}'.format(github_token)}
     query = """
     query($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
           repository(owner: $repoOwner, name: $repoName) {
@@ -72,6 +72,7 @@ def fetch_merge_commits(owner, repo, pr_number, github_token):
         'repoName': repo_without_org,
         'prNumber': pr_number
     }
+    headers = {}  # No Authorization header for unauthenticated requests
     response = requests.post(url, json={'query': query, 'variables': variables}, headers=headers)
     result = response.json()
     print(result)
@@ -200,10 +201,10 @@ def commit_and_push(manifest_repo_path, commit_message):
         print("No changes to commit.")
 
 #Create a new PR for the updated manifest files
-def create_pull_request(github_token, repo_name, head_branch, base_branch, title, description):
-    g = Github(github_token)
-    repo = g.get_repo(repo_name)
-    ensure_label_exists(repo, 'bhc-auto-merge', color='008672')
+def create_pull_request( repo_name, head_branch, base_branch, title, description):
+    # g = Github(github_token)
+    repo = Github().get_repo(repo_name)  # Use unauthenticated access
+    # ensure_label_exists(repo, 'bhc-auto-merge', color='008672')
 
     try:
         pr = repo.create_pull(title=title, body=description, base=base_branch, head=head_branch)
@@ -252,7 +253,7 @@ def create_or_checkout_branch(repo, branch_name, base_branch):
         sys.exit(1)
 
 def main():
-    github_token = os.getenv('GITHUB_TOKEN')
+    # github_token = os.getenv('GITHUB_TOKEN')
     manifest_repo_path = os.getenv('META_REPO_PATH')
     pr_number = os.getenv('PR_NUMBER')
     manifest_repo_name = os.getenv('META_REPO_NAME')
@@ -260,14 +261,15 @@ def main():
     repo_owner = os.getenv('GITHUB_ORG')
     base_branch = os.getenv('BASE_BRANCH')
 
-    g = Github(github_token)
-    repo = g.get_repo(repo_name)
+    # g = Github(github_token)
+    # repo = g.get_repo(repo_name)
+    repo = Github().get_repo(repo_name)  # Use unauthenticated access
     meta_pr = repo.get_pull(int(pr_number))
 
     # Extract ticket number
     ticket_number = extract_ticket_number(meta_pr.title)
  
-    prs, issue_repo_name, issue_number = fetch_merge_commits(repo_owner, repo_name, int(pr_number), github_token)
+    prs, issue_repo_name, issue_number = fetch_merge_commits(repo_owner, repo_name, int(pr_number))
     
     if issue_number:
         feature_branch = "feature_{}_issue_{}".format(issue_repo_name, issue_number)
@@ -293,7 +295,7 @@ def main():
     changes_made = update_xml_files(manifest_repo_path, updates)
     if changes_made:  
       commit_and_push(manifest_repo_path, "Update manifest for {}".format(','.join(updates.keys())))
-      create_pull_request(github_token, manifest_repo_name, feature_branch, base_branch, manifest_pr_title, manifest_pr_description)
+      create_pull_request(manifest_repo_name, feature_branch, base_branch, manifest_pr_title, manifest_pr_description)
 
 if __name__ == '__main__':
     main()
