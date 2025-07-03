@@ -46,7 +46,7 @@ jobs:
     
       - name: Run the update script
         env:
-          GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
           GITHUB_ORG: 'ssitar583'
           META_REPO_PATH: ${{ github.workspace }}/meta_repo
           META_REPO_NAME: 'ssitar583/meta-rdk-video'
