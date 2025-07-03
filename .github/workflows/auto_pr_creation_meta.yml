@@ -1,4 +1,4 @@
-name: Update Meta on entservices Repo Merge
+name: Update Meta on Component Repo Merge
 
 on:
   workflow_call:
@@ -7,30 +7,31 @@ on:
         required: true
 
 jobs:
-  auto_pr_creation_manifest:
+  auto_pr_creation_meta:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     steps:
       - name: Checkout build_tools_workflows code
         uses: actions/checkout@v4
         with:
           repository: rdkcentral/build_tools_workflows
           path: 'tools'
-          ref: develop
+          ref: RDKEMW-4778
           token: ${{ secrets.RDKCM_RDKE }}
 
-      - name: Checkout Manifest Repository
+      - name: Checkout Meta Repository
         uses: actions/checkout@v4
         with:
-          repository: 'rdkcentral/rdke-middleware-generic-manifest'
-          path: 'manifest_repo'
+          repository: 'rdkcentral/meta-rdk-video'
+          path: 'meta_repo'
+          ref: RDKEMW-4778
           token: ${{ secrets.RDKCM_RDKE }}
       
       - name: Update Git Config
         env:
           BOT_EMAIL: ${{ vars.RDKM_BOT_EMAIL }}
         run: |
-            cd manifest_repo
+            cd meta_repo
             git config user.name "bot"
             git config user.email "$BOT_EMAIL"
             cd ..
@@ -49,11 +50,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
           GITHUB_ORG: 'rdkcentral'
-          MANIFEST_REPO_PATH: ${{ github.workspace }}/manifest_repo
-          MANIFEST_REPO_NAME: 'rdkcentral/rdke-middleware-generic-manifest'
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          META_REPO_PATH: ${{ github.workspace }}/meta_repo
+          META_REPO_NAME: 'rdkcentral/meta-rdk-video'
+          PR_NUMBER: 111
+          BASE_BRANCH: develop
         run: |
-            cd manifest_repo
-            python3 ../tools/build_health_check_workflow_scripts/auto_pr_generation_manifest.py
-            cd ..
+          cd meta_repo
+          python3 ../tools/build_health_check_workflow_scripts/auto_pr_generation_meta.py
+          cd ..
