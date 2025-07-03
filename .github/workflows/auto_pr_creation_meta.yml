@@ -14,7 +14,7 @@ jobs:
       - name: Checkout build_tools_workflows code
         uses: actions/checkout@v4
         with:
-          repository: rdkcentral/build_tools_workflows
+          repository: ssitar583/build_tools_workflows
           path: 'tools'
           ref: RDKEMW-4778
           token: ${{ secrets.RDKCM_RDKE }}
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout Meta Repository
         uses: actions/checkout@v4
         with:
-          repository: 'rdkcentral/meta-rdk-video'
+          repository: 'ssitar583/meta-rdk-video'
           path: 'meta_repo'
           ref: RDKEMW-4778
           token: ${{ secrets.RDKCM_RDKE }}
@@ -49,9 +49,9 @@ jobs:
       - name: Run the update script
         env:
           GITHUB_TOKEN: ${{ secrets.RDKCM_RDKE }}
-          GITHUB_ORG: 'rdkcentral'
+          GITHUB_ORG: 'ssitar583'
           META_REPO_PATH: ${{ github.workspace }}/meta_repo
-          META_REPO_NAME: 'rdkcentral/meta-rdk-video'
+          META_REPO_NAME: 'ssitar583/meta-rdk-video'
           PR_NUMBER: 111
           BASE_BRANCH: develop
         run: |
