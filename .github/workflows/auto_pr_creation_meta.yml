@@ -17,7 +17,7 @@ jobs:
           repository: ssitar583/build_tools_workflows
           path: 'tools'
           ref: develop
-          token: ${{ secrets.RDKCM_RDKE }}
+          token: ${{ secrets.PAT }}
 
       - name: Checkout Meta Repository
         uses: actions/checkout@v4
