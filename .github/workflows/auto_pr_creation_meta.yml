@@ -30,8 +30,8 @@ jobs:
           BOT_EMAIL: ${{ vars.RDKM_BOT_EMAIL }}
         run: |
             cd meta_repo
-            git config user.name "bot"
-            git config user.email "$BOT_EMAIL"
+            git config user.name "ssitar583"
+            git config user.email "soundaryaa_sitaram@comcast.com"
             cd ..
 
       - name: Set up Python
