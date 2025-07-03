@@ -16,7 +16,7 @@ jobs:
         with:
           repository: ssitar583/build_tools_workflows
           path: 'tools'
-          ref: RDKEMW-4778
+          ref: develop
           token: ${{ secrets.RDKCM_RDKE }}
 
       - name: Checkout Meta Repository
@@ -24,7 +24,7 @@ jobs:
         with:
           repository: 'ssitar583/meta-rdk-video'
           path: 'meta_repo'
-          ref: RDKEMW-4778
+          ref: develop
           token: ${{ secrets.RDKCM_RDKE }}
       
       - name: Update Git Config
